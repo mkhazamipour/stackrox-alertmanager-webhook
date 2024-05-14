@@ -15,7 +15,7 @@ def webhook():
         return jsonify({'error': 'No JSON data received'}), 400
 
 def send_to_alertmanager(json_data):
-    alertmanager_url = os.getenv("ALERTMANAGER_URL")
+    alertmanager_url = os.environ.get("ALERTMANAGER_URL")
     headers = {"Content-Type": "application/json"}
 
     # Extract data from JSON
