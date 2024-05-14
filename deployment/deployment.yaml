@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stackrox-alertmanager-webhook
+  namespace: stackrox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stackrox-alertmanager-webhook
+  template:
+    metadata:
+      labels:
+        app: stackrox-alertmanager-webhook
+    spec:
+      containers:
+        - name: stackrox-alertmanager-webhook
+          image: mormoroth/stackrox-alertmanager-webhook
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: ALERTMANAGER_URL
+              value: https://alertmanager.url/api/v2/alerts
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
