@@ -35,8 +35,7 @@ def send_to_alertmanager(json_data):
         "containerName": alert["deployment"]["containers"][0]["name"],
         "time": alert["time"],
         "firstOccurred": alert["firstOccurred"],
-        "Username": next((attr["value"] for attr in alert["violations"][0]["keyValueAttrs"]["attrs"] if attr["key"] == "Username"), None)
-
+        "Username": next((attr["value"] for attr in alert["violations"][0]["keyValueAttrs"]["attrs"] if attr["key"] == "Username"), "No-Username")
     }
 
     # Prepare payload for Alertmanager
