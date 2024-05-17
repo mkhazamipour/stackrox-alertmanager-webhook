@@ -21,7 +21,7 @@ spec:
               protocol: TCP
           env:
             - name: ALERTMANAGER_URL
-              value: https://alertmanager.url/api/v2/alerts
+              value: https://alertmanager.url
           imagePullPolicy: Always
   strategy:
     type: RollingUpdate

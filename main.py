@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'PUT'])
 def webhook():
     json_data = request.get_json()
-
-    if json_data:
+    if json_data["alert"]["id"] == "testalert":
+        return "Test webhook received", 200
+    elif json_data:
         # Forward JSON data to Alertmanager
         send_to_alertmanager(json_data)
         return jsonify({'message': 'JSON data forwarded to Alertmanager'}), 200
@@ -15,7 +17,7 @@ def webhook():
         return jsonify({'error': 'No JSON data received'}), 400
 
 def send_to_alertmanager(json_data):
-    alertmanager_url = os.environ.get("ALERTMANAGER_URL")
+    alertmanager_url = os.environ.get("ALERTMANAGER_URL")+"/api/v2/alerts"
     headers = {"Content-Type": "application/json"}
 
     # Extract data from JSON
