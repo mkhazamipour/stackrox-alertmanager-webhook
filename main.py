@@ -23,19 +23,21 @@ def send_to_alertmanager(json_data):
     # Extract data from JSON
     alert = json_data["alert"]
     labels = {
-        "id": alert["id"],
-        "policyName": alert["policy"]["name"],
-        "policyDescription": alert["policy"]["description"],
-        "clusterName": alert["clusterName"],
-        "namespace": alert["namespace"],
+        "ID": alert["id"],
+        "PolicyName": alert["policy"]["name"],
+        "PolicyDescription": alert["policy"]["description"],
+        "ClusterName": alert["clusterName"],
+        "Namespace": alert["namespace"],
         "Name": alert["deployment"]["name"],
         "Type": alert["deployment"]["type"],
-        "Namespace": alert["deployment"]["namespace"],
         "ImageName": alert["deployment"]["containers"][0]["image"]["name"]["fullName"],
-        "containerName": alert["deployment"]["containers"][0]["name"],
-        "time": alert["time"],
+        "ContainerName": alert["deployment"]["containers"][0]["name"],
+        "Time": alert["time"],
         "firstOccurred": alert["firstOccurred"],
-        "Username": next((attr["value"] for attr in alert["violations"][0]["keyValueAttrs"]["attrs"] if attr["key"] == "Username"), "No-Username")
+        "Username": next(
+            (attr["value"] for attr in alert.get("violations", [{}])[0].get("keyValueAttrs", {}).get("attrs", []) if attr["key"] == "Username"),
+            "No-Username"
+        )
     }
 
     # Prepare payload for Alertmanager
